@@ -23,48 +23,47 @@
 
 ### 2. 在 Zeabur 上创建项目
 
-#### 方法一：使用多个 zbpack 配置文件（推荐）
+#### 正确的多服务部署方法
+
+对于包含多个服务的单一仓库（Monorepo），需要为每个服务手动创建独立的部署：
 
 1. 在 [Zeabur Dashboard](https://dash.zeabur.com) 中点击 "New Project"
-2. **部署 API 服务**：
-   - 选择 "Import from GitHub"
-   - 选择你的 `jira_clone` 仓库
-   - 服务名称设置为 `api`（或留空，使用默认）
-   - Zeabur 会自动读取根目录的 `zbpack.json` 配置
-3. **部署前端服务**：
-   - 在同一项目中点击 "Add Service"
-   - 选择 "Git Repository"
-   - 选择相同的 `jira_clone` 仓库
-   - 服务名称设置为 `client`
-   - Zeabur 会自动读取 `zbpack.client.json` 配置
 
-#### 方法二：手动创建服务（推荐）
-
-如果自动检测失败，可以手动创建服务：
-
-1. **创建数据库服务**
-   - 在项目中点击 "Add Service"
+2. **创建数据库服务**：
+   - 点击 "Add Service" 或 "Deploy service"
    - 选择 "Database" → "PostgreSQL"
    - 选择版本 14 或更高
    - 记录数据库连接信息
 
-2. **创建 API 服务**
-   - 点击 "Add Service" → "Git Repository"
-   - 选择你的仓库
-   - 设置以下配置：
-     - **Source Directory**: `/api`
-     - **Framework**: Node.js（自动检测）
-     - Zeabur 会自动读取 `api/zbpack.json` 配置
-     - **Port**: `5000`
+3. **部署 API 服务**：
+   - 点击 "Add Service" 或 "Deploy service"
+   - 选择 "Deploy your source code"
+   - 选择你的 `jira_clone` 仓库
+   - 服务名称设置为 `api`
+   - Zeabur 会自动读取根目录的 `zbpack.json` 配置
 
-3. **创建前端服务**
-   - 点击 "Add Service" → "Git Repository"
-   - 选择你的仓库
-   - 设置以下配置：
-     - **Source Directory**: `/client`
-     - **Framework**: Node.js（自动检测）
-     - Zeabur 会自动读取 `client/zbpack.json` 配置
-     - **Port**: `3000`
+4. **部署前端服务**：
+   - 再次点击 "Add Service" 或 "Deploy service"
+   - 选择 "Deploy your source code"
+   - 选择相同的 `jira_clone` 仓库
+   - 服务名称设置为 `client`
+   - Zeabur 会自动读取 `zbpack.client.json` 配置
+
+#### 备用方法：手动配置服务目录
+
+如果配置文件方法不起作用，可以通过环境变量手动指定：
+
+1. **API 服务**：
+   - 部署时选择同一个仓库
+   - 在环境变量中添加：`ZBPACK_APP_DIR=./api`
+   - 或者添加：`ZBPACK_BUILD_COMMAND=cd api && npm install && npm run build`
+   - 添加：`ZBPACK_START_COMMAND=cd api && npm start`
+
+2. **前端服务**：
+   - 部署时选择同一个仓库
+   - 在环境变量中添加：`ZBPACK_APP_DIR=./client`
+   - 或者添加：`ZBPACK_BUILD_COMMAND=cd client && npm install && npm run build`
+   - 添加：`ZBPACK_START_COMMAND=cd client && npm run serve`
 
 ### 3. 配置服务
 
@@ -129,16 +128,37 @@ npm run seed
 
 配置完成后，每次向 GitHub 仓库推送代码时，Zeabur 会自动重新部署您的应用。
 
+## 重要说明
+
+**关于 Zeabur 多服务部署的关键要点：** <mcreference link="https://zeabur.com/docs/en-US/guides/nodejs" index="3">3</mcreference>
+
+1. **Zeabur 不会自动为单个仓库创建多个服务** - 这是与其他平台的主要区别
+2. **每个服务都需要手动创建** - 即使是同一个 GitHub 仓库，也需要分别部署
+3. **使用配置文件区分服务** - 通过 `zbpack.json` 和 `zbpack.client.json` 来指定不同服务的配置 <mcreference link="https://zeabur.com/docs/en-US/guides/nodejs" index="3">3</mcreference>
+4. **环境变量作为备用方案** - 如果配置文件不起作用，可以使用 `ZBPACK_APP_DIR` 等环境变量 <mcreference link="https://zeabur.com/docs/en-US/guides/nodejs" index="3">3</mcreference>
+
+### 部署步骤总结
+
+为了确保成功部署，请按照以下顺序操作：
+
+1. **第一步**：创建新项目
+2. **第二步**：添加 PostgreSQL 数据库服务
+3. **第三步**：点击 "Add Service" → "Deploy your source code" → 选择仓库 → 服务名设为 `api`
+4. **第四步**：再次点击 "Add Service" → "Deploy your source code" → 选择同一仓库 → 服务名设为 `client`
+5. **第五步**：配置环境变量
+6. **第六步**：等待部署完成并初始化数据库
+
 ## 故障排除
 
 ### 常见问题
 
-1. **Zeabur 没有识别出多个服务**
-   - 确认根目录有 `zbpack.json`（API服务）和 `zbpack.client.json`（前端服务）
-   - 检查每个配置文件中的 `app_dir` 路径是否正确
-   - 在部署第二个服务时，确保服务名称设置为 `client`
-   - 如果自动检测失败，使用手动创建服务的方法
-   - 确保项目结构清晰，每个服务都有独立的目录和package.json
+1. **如何在 Zeabur 中部署多个服务**
+   - Zeabur 不会自动识别并创建多个服务，需要手动为每个服务创建独立的部署
+   - 对于同一个仓库，需要多次点击 "Add Service" 或 "Deploy service"
+   - 每次都选择 "Deploy your source code" 并选择同一个仓库
+   - 通过不同的服务名称（如 `api` 和 `client`）来区分服务
+   - 使用 `zbpack.json` 和 `zbpack.client.json` 配置文件来指定不同的构建和启动命令
+   - 如果配置文件不起作用，使用环境变量 `ZBPACK_APP_DIR` 来指定服务目录
 
 2. **构建失败**
    - 检查 `package.json` 中的脚本是否正确
