@@ -22,13 +22,14 @@
 
 ### 2. 在 Zeabur 上创建项目
 
-#### 方法一：使用 zbpack.json 配置文件（自动检测）
+#### 方法一：使用 zbpack.json 配置文件（自动检测多服务）
 
 1. 在 [Zeabur Dashboard](https://dash.zeabur.com) 中点击 "New Project"
 2. 选择 "Import from GitHub"
 3. 选择你的 `jira_clone` 仓库
-4. Zeabur 会自动检测项目结构和 `zbpack.json` 配置文件
-5. 为每个服务（api 和 client）分别创建部署
+4. Zeabur 会自动检测根目录的 `zbpack.json` 配置文件中的 `services` 配置
+5. 系统会自动为每个服务（api 和 client）分别创建部署
+6. 如果 Zeabur 没有自动识别出两个服务，请确认根目录的 `zbpack.json` 文件包含正确的 `services` 配置
 
 #### 方法二：手动创建服务（推荐）
 
@@ -125,15 +126,21 @@ npm run seed
 
 ### 常见问题
 
-1. **构建失败**
+1. **Zeabur 没有识别出多个服务**
+   - 确认根目录的 `zbpack.json` 文件包含 `services` 配置
+   - 检查 `services` 配置中每个服务的 `app_dir` 路径是否正确
+   - 尝试重新导入项目或手动创建服务
+   - 确保项目结构清晰，每个服务都有独立的目录
+
+2. **构建失败**
    - 检查 `package.json` 中的脚本是否正确
    - 确认所有依赖都已正确安装
 
-2. **数据库连接失败**
+3. **数据库连接失败**
    - 检查环境变量是否正确配置
    - 确认数据库服务已启动
 
-3. **API 无法访问**
+4. **API 无法访问**
    - 检查端口配置是否正确
    - 确认健康检查路径存在
 
