@@ -163,6 +163,9 @@ npm run seed
 2. **构建失败**
    - 检查 `package.json` 中的脚本是否正确
    - 确认所有依赖都已正确安装
+   - 如果遇到npm依赖冲突错误（如typeorm相关），确保使用 `--legacy-peer-deps` 选项
+   - 检查 `.npmrc` 文件是否包含 `legacy-peer-deps=true`
+   - 如果遇到ts-node版本冲突（typeorm需要ts-node@^10.7.0），将devDependencies中的ts-node版本更新为 `^10.7.0`
 
 3. **数据库连接失败**
    - 检查环境变量是否正确配置

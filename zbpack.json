@@ -1,6 +1,6 @@
 {
   "app_dir": "./api",
-  "build_command": "npm install && npm run build",
+  "build_command": "npm install --legacy-peer-deps && npm run build",
   "start_command": "npm start",
-  "install_command": "npm install"
+  "install_command": "npm install --legacy-peer-deps"
 }
