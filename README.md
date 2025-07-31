@@ -75,7 +75,7 @@ I will not be accepting PR's on this repository. Feel free to fork and maintain 
 本项目已配置支持 Zeabur 一键部署：
 
 1. 查看详细部署指南：[ZEABUR_DEPLOYMENT.md](./ZEABUR_DEPLOYMENT.md)
-2. 项目包含完整的 Zeabur 配置文件 (`zeabur.json`)
+2. 项目包含完整的 Zeabur 配置文件 (`zbpack.json`)
 3. 支持自动化 CI/CD 部署
 
 ### 本地开发

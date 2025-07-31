@@ -1,0 +1,6 @@
+{
+  "app_dir": "./",
+  "build_command": "npm install && npm run build",
+  "start_command": "npm start",
+  "install_command": "npm install"
+}

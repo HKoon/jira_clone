@@ -1,0 +1,5 @@
+{
+  "app_dir": "./",
+  "build_command": "echo 'Building monorepo project'",
+  "start_command": "echo 'Please deploy services separately'"
+}

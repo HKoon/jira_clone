@@ -10,31 +10,53 @@
 
 ## 部署步骤
 
-### 1. 准备项目
+### 1. 项目准备
 
-确保您的项目包含以下文件：
-- `zeabur.json` - Zeabur 配置文件
-- `api/Dockerfile` - API 服务的 Docker 配置
-- `client/Dockerfile` - 前端服务的 Docker 配置
+确保你的项目已经推送到 GitHub 仓库，并且包含以下文件：
+- `zbpack.json` - Zeabur 根目录配置文件
+- `api/zbpack.json` - API 服务的 Zeabur 配置
+- `client/zbpack.json` - 前端服务的 Zeabur 配置
+- `api/Dockerfile` - API 服务的 Docker 配置（可选）
+- `client/Dockerfile` - 前端服务的 Docker 配置（可选）
 - `.dockerignore` - Docker 忽略文件
 
 ### 2. 在 Zeabur 上创建项目
 
-#### 方法一：使用 zeabur.json 配置文件
+#### 方法一：使用 zbpack.json 配置文件（自动检测）
 
-1. 登录 [Zeabur Dashboard](https://dash.zeabur.com)
-2. 点击 "New Project" 创建新项目
-3. 选择 "Import from GitHub" 并连接您的 GitHub 仓库
-4. 选择包含 Jira Clone 代码的仓库
-5. Zeabur 会自动检测 `zeabur.json` 配置文件
+1. 在 [Zeabur Dashboard](https://dash.zeabur.com) 中点击 "New Project"
+2. 选择 "Import from GitHub"
+3. 选择你的 `jira_clone` 仓库
+4. Zeabur 会自动检测项目结构和 `zbpack.json` 配置文件
+5. 为每个服务（api 和 client）分别创建部署
 
 #### 方法二：手动创建服务（推荐）
 
 如果自动检测失败，可以手动创建服务：
 
-1. 创建 PostgreSQL 数据库服务
-2. 创建 API 服务（选择 Node.js 模板）
-3. 创建 Web 服务（选择 Node.js 模板）
+1. **创建数据库服务**
+   - 在项目中点击 "Add Service"
+   - 选择 "Database" → "PostgreSQL"
+   - 选择版本 14 或更高
+   - 记录数据库连接信息
+
+2. **创建 API 服务**
+   - 点击 "Add Service" → "Git Repository"
+   - 选择你的仓库
+   - 设置以下配置：
+     - **Source Directory**: `/api`
+     - **Framework**: Node.js（自动检测）
+     - Zeabur 会自动读取 `api/zbpack.json` 配置
+     - **Port**: `5000`
+
+3. **创建前端服务**
+   - 点击 "Add Service" → "Git Repository"
+   - 选择你的仓库
+   - 设置以下配置：
+     - **Source Directory**: `/client`
+     - **Framework**: Node.js（自动检测）
+     - Zeabur 会自动读取 `client/zbpack.json` 配置
+     - **Port**: `3000`
 
 ### 3. 配置服务
 
