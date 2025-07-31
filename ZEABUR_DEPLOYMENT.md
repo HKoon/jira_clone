@@ -13,23 +13,30 @@
 ### 1. 项目准备
 
 确保你的项目已经推送到 GitHub 仓库，并且包含以下文件：
-- `zbpack.json` - Zeabur 根目录配置文件
-- `api/zbpack.json` - API 服务的 Zeabur 配置
-- `client/zbpack.json` - 前端服务的 Zeabur 配置
+- `zbpack.json` - API 服务的 Zeabur 配置（默认服务）
+- `zbpack.client.json` - 前端服务的 Zeabur 配置
+- `api/zbpack.json` - API 服务目录内的配置（可选）
+- `client/zbpack.json` - 前端服务目录内的配置（可选）
 - `api/Dockerfile` - API 服务的 Docker 配置（可选）
 - `client/Dockerfile` - 前端服务的 Docker 配置（可选）
 - `.dockerignore` - Docker 忽略文件
 
 ### 2. 在 Zeabur 上创建项目
 
-#### 方法一：使用 zbpack.json 配置文件（自动检测多服务）
+#### 方法一：使用多个 zbpack 配置文件（推荐）
 
 1. 在 [Zeabur Dashboard](https://dash.zeabur.com) 中点击 "New Project"
-2. 选择 "Import from GitHub"
-3. 选择你的 `jira_clone` 仓库
-4. Zeabur 会自动检测根目录的 `zbpack.json` 配置文件中的 `services` 配置
-5. 系统会自动为每个服务（api 和 client）分别创建部署
-6. 如果 Zeabur 没有自动识别出两个服务，请确认根目录的 `zbpack.json` 文件包含正确的 `services` 配置
+2. **部署 API 服务**：
+   - 选择 "Import from GitHub"
+   - 选择你的 `jira_clone` 仓库
+   - 服务名称设置为 `api`（或留空，使用默认）
+   - Zeabur 会自动读取根目录的 `zbpack.json` 配置
+3. **部署前端服务**：
+   - 在同一项目中点击 "Add Service"
+   - 选择 "Git Repository"
+   - 选择相同的 `jira_clone` 仓库
+   - 服务名称设置为 `client`
+   - Zeabur 会自动读取 `zbpack.client.json` 配置
 
 #### 方法二：手动创建服务（推荐）
 
@@ -127,10 +134,11 @@ npm run seed
 ### 常见问题
 
 1. **Zeabur 没有识别出多个服务**
-   - 确认根目录的 `zbpack.json` 文件包含 `services` 配置
-   - 检查 `services` 配置中每个服务的 `app_dir` 路径是否正确
-   - 尝试重新导入项目或手动创建服务
-   - 确保项目结构清晰，每个服务都有独立的目录
+   - 确认根目录有 `zbpack.json`（API服务）和 `zbpack.client.json`（前端服务）
+   - 检查每个配置文件中的 `app_dir` 路径是否正确
+   - 在部署第二个服务时，确保服务名称设置为 `client`
+   - 如果自动检测失败，使用手动创建服务的方法
+   - 确保项目结构清晰，每个服务都有独立的目录和package.json
 
 2. **构建失败**
    - 检查 `package.json` 中的脚本是否正确

@@ -1,6 +1,6 @@
 {
-  "app_dir": "./api",
+  "app_dir": "./client",
   "build_command": "npm install && npm run build",
-  "start_command": "npm start",
+  "start_command": "npm run serve",
   "install_command": "npm install"
 }
