@@ -17,7 +17,7 @@ import {
 
 import is from 'utils/validation';
 import { IssueType, IssueStatus, IssuePriority } from 'constants/issues';
-import { Comment, Project, User } from '.';
+import { Comment, Project, User, TimeLog } from '.';
 
 @Entity()
 class Issue extends BaseEntity {
@@ -96,6 +96,12 @@ class Issue extends BaseEntity {
 
   @RelationId((issue: Issue) => issue.users)
   userIds: number[];
+
+  @OneToMany(
+    () => TimeLog,
+    timeLog => timeLog.issue,
+  )
+  timeLogs: TimeLog[];
 
   @BeforeInsert()
   @BeforeUpdate()

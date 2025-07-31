@@ -1,8 +1,10 @@
 import * as authentication from 'controllers/authentication';
 import * as comments from 'controllers/comments';
 import * as issues from 'controllers/issues';
+import * as notifications from 'controllers/notifications';
 import * as projects from 'controllers/projects';
 import * as test from 'controllers/test';
+import * as timeLogs from 'controllers/timeLogs';
 import * as users from 'controllers/users';
 
 export const attachPublicRoutes = (app: any): void => {
@@ -12,6 +14,8 @@ export const attachPublicRoutes = (app: any): void => {
   }
 
   app.post('/authentication/guest', authentication.createGuestAccount);
+  app.post('/authentication/register', authentication.register);
+  app.post('/authentication/login', authentication.login);
 };
 
 export const attachPrivateRoutes = (app: any): void => {
@@ -28,5 +32,18 @@ export const attachPrivateRoutes = (app: any): void => {
   app.get('/project', projects.getProjectWithUsersAndIssues);
   app.put('/project', projects.update);
 
-  app.get('/currentUser', users.getCurrentUser);
+  app.get('/currentUser', authentication.getCurrentUser);
+
+  app.get('/notifications', notifications.getUserNotifications);
+  app.put('/notifications/:notificationId/read', notifications.markAsRead);
+  app.put('/notifications/mark-all-read', notifications.markAllAsRead);
+  app.get('/notifications/unread-count', notifications.getUnreadCount);
+  app.delete('/notifications/:notificationId', notifications.deleteNotification);
+
+  app.post('/time-logs', timeLogs.logTime);
+  app.get('/issues/:issueId/time-logs', timeLogs.getIssueTimeLogs);
+  app.get('/time-logs/user', timeLogs.getUserTimeLogs);
+  app.put('/time-logs/:timeLogId', timeLogs.updateTimeLog);
+  app.delete('/time-logs/:timeLogId', timeLogs.deleteTimeLog);
+  app.get('/time-logs/report', timeLogs.getTimeReport);
 };

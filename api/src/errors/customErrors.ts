@@ -36,3 +36,21 @@ export class InvalidTokenError extends CustomError {
     super(message, 'INVALID_TOKEN', 401);
   }
 }
+
+export class InvalidCredentialsError extends CustomError {
+  constructor(message = 'Invalid email or password.') {
+    super(message, 'INVALID_CREDENTIALS', 401);
+  }
+}
+
+export class EmailAlreadyInUseError extends CustomError {
+  constructor(message = 'Email is already in use.') {
+    super(message, 'EMAIL_ALREADY_IN_USE', 400);
+  }
+}
+
+export class ForbiddenError extends CustomError {
+  constructor(message = 'Access forbidden.') {
+    super(message, 'FORBIDDEN', 403);
+  }
+}

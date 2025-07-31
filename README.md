@@ -68,6 +68,33 @@ Both Client and API are currently tested through [end-to-end Cypress tests](http
 
 I will not be accepting PR's on this repository. Feel free to fork and maintain your own version.
 
+## 部署
+
+### Zeabur 部署
+
+本项目已配置支持 Zeabur 一键部署：
+
+1. 查看详细部署指南：[ZEABUR_DEPLOYMENT.md](./ZEABUR_DEPLOYMENT.md)
+2. 项目包含完整的 Zeabur 配置文件 (`zeabur.json`)
+3. 支持自动化 CI/CD 部署
+
+### 本地开发
+
+```bash
+# 安装增强功能
+chmod +x setup-enhanced-features.sh
+./setup-enhanced-features.sh
+
+# 或手动安装
+cd api && npm install
+npm run migration:run
+npm run seed
+npm run start:dev
+
+cd ../client && npm install
+npm start
+```
+
 ## License
 
 [MIT](https://opensource.org/licenses/MIT)

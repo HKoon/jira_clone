@@ -6,6 +6,7 @@
   "scripts": {
     "start": "webpack-dev-server",
     "start:production": "pm2 start --name 'jira_client' server.js",
+    "serve": "node server.js",
     "test:jest": "jest",
     "test:cypress": "node_modules/.bin/cypress open",
     "build": "rm -rf build && webpack --config webpack.config.production.js --progress",
