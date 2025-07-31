@@ -2,37 +2,38 @@
   "name": "jira-clone",
   "services": {
     "api": {
-      "buildCommand": "cd api && npm install && npm run build",
-      "startCommand": "cd api && npm start",
-      "environment": {
+      "source": {
+        "type": "git"
+      },
+      "build": {
+        "commands": [
+          "cd api",
+          "npm install",
+          "npm run build"
+        ]
+      },
+      "start": "cd api && npm start",
+      "env": {
         "NODE_ENV": "production"
       },
-      "ports": [5000],
-      "healthCheck": {
-        "path": "/api/test",
-        "timeout": 30
-      }
+      "expose": 5000
     },
-    "client": {
-      "buildCommand": "cd client && npm install && npm run build",
-      "startCommand": "cd client && npm run serve",
-      "environment": {
-        "NODE_ENV": "production",
-        "REACT_APP_API_URL": "${ZEABUR_WEB_URL}/api"
+    "web": {
+      "source": {
+        "type": "git"
       },
-      "ports": [3000],
-      "healthCheck": {
-        "path": "/",
-        "timeout": 30
-      }
-    },
-    "database": {
-      "type": "postgresql",
-      "version": "14"
+      "build": {
+        "commands": [
+          "cd client",
+          "npm install",
+          "npm run build"
+        ]
+      },
+      "start": "cd client && npm run serve",
+      "env": {
+        "NODE_ENV": "production"
+      },
+      "expose": 3000
     }
-  },
-  "dependencies": {
-    "api": ["database"],
-    "client": ["api"]
   }
 }

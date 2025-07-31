@@ -20,30 +20,39 @@
 
 ### 2. 在 Zeabur 上创建项目
 
+#### 方法一：使用 zeabur.json 配置文件
+
 1. 登录 [Zeabur Dashboard](https://dash.zeabur.com)
 2. 点击 "New Project" 创建新项目
 3. 选择 "Import from GitHub" 并连接您的 GitHub 仓库
 4. 选择包含 Jira Clone 代码的仓库
+5. Zeabur 会自动检测 `zeabur.json` 配置文件
+
+#### 方法二：手动创建服务（推荐）
+
+如果自动检测失败，可以手动创建服务：
+
+1. 创建 PostgreSQL 数据库服务
+2. 创建 API 服务（选择 Node.js 模板）
+3. 创建 Web 服务（选择 Node.js 模板）
 
 ### 3. 配置服务
 
-Zeabur 会自动检测 `zeabur.json` 配置文件并创建以下服务：
-
 #### 数据库服务 (PostgreSQL)
-- 类型：PostgreSQL 14
-- 自动创建和配置
+- 在 Zeabur 中添加 PostgreSQL 服务
+- 版本：14 或更高
 
-#### API 服务
-- 端口：5000
-- 构建命令：`cd api && npm install && npm run build`
-- 启动命令：`cd api && npm start`
-- 依赖：数据库服务
+#### API 服务配置
+- **源码路径**: `/api`
+- **构建命令**: `npm install && npm run build`
+- **启动命令**: `npm start`
+- **端口**: 5000
 
-#### 前端服务
-- 端口：3000
-- 构建命令：`cd client && npm install && npm run build`
-- 启动命令：`cd client && npm run serve`
-- 依赖：API 服务
+#### 前端服务配置
+- **源码路径**: `/client`
+- **构建命令**: `npm install && npm run build`
+- **启动命令**: `npm run serve`
+- **端口**: 3000
 
 ### 4. 配置环境变量
 
